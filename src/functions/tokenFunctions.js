@@ -1,4 +1,10 @@
-import { exchangeRefreshTokenForAuthTokens, getProfileFromUserName, getUserTitles } from 'psn-api'
+import { 
+  exchangeRefreshTokenForAuthTokens,
+  getProfileFromUserName,
+  getUserTitles,
+  getUserTrophiesEarnedForTitle,
+  makeUniversalSearch
+} from 'psn-api'
 import fs from 'node:fs/promises'
 import expDate from '../keyInfo/expDate.json' assert {type: 'json'}
 
@@ -27,5 +33,13 @@ export const getUserGamesFromId = async (auth, userId) => {
 }
 
 export const getUserDetails = async (auth, username) => {
-    return await getProfileFromUserName(auth, username)
+  return await getProfileFromUserName(auth, username)
+}
+
+export const makeSearch = async (auth, username) => {
+  return await makeUniversalSearch(auth, username, 'SocialAllAccounts')
+}
+
+export const getTrophyDetails = async (auth, accountId, titleId) => {
+  return getUserTrophiesEarnedForTitle(auth, accountId, titleId, 'all', { npServiceName: "trophy" })
 }
