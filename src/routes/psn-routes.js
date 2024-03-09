@@ -8,15 +8,13 @@ import {
   getUserId,
   getUserDetails,
   getTrophyDetails,
-  makeSearch
+  getAllTrophies,
+  getTrophyGroups
 } from '../functions/tokenFunctions.js'
 
 const router = Router()
 
 router
-  .use((req, res, next) => {
-    next()
-  })
   .get('/userGames&Achievements/:username', async (req, res) => {
     const updatedAuth = await uploadTokenAuth(auth)
     const id = await getUserId(updatedAuth, req.params.username)
@@ -34,11 +32,23 @@ router
     // const userId = await makeSearch(auth, req.params.username)
     res.send(userId)
   })
+  // Devuleve los trofeos del usuario según un juego
   .get('/trophyDetails', async (req, res) => {
     const updatedAuth = await uploadTokenAuth(auth)
     const {userId, titleId} = req.query
     const tDetails = await getTrophyDetails(updatedAuth, userId, titleId)
     res.json({tDetails})
+  })
+  //Devuelve todos los trofeos del videojuego
+  .get('/allTrophies/:trophieId', async (req, res) => {
+    const updatedAuth = await uploadTokenAuth(auth)
+    const allTrophies = await getAllTrophies(updatedAuth, req.params.trophieId)
+    res.send(allTrophies)
+  })
+  .get('/allTrophyGroups/:trophieId', async(req, res) => {
+    const updatedAuth = await uploadTokenAuth(auth)
+    const trophyGroups = await getTrophyGroups(updatedAuth, req.params.trophieId)
+    res.send(trophyGroups)
   })
 
 export { router }

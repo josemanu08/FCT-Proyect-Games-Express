@@ -3,7 +3,9 @@ import {
   getProfileFromUserName,
   getUserTitles,
   getUserTrophiesEarnedForTitle,
-  makeUniversalSearch
+  makeUniversalSearch,
+  getTitleTrophies,
+  getTitleTrophyGroups
 } from 'psn-api'
 import fs from 'node:fs/promises'
 import expDate from '../keyInfo/expDate.json' assert {type: 'json'}
@@ -42,4 +44,17 @@ export const makeSearch = async (auth, username) => {
 
 export const getTrophyDetails = async (auth, accountId, titleId) => {
   return getUserTrophiesEarnedForTitle(auth, accountId, titleId, 'all', { npServiceName: "trophy" })
+}
+
+export const getAllTrophies = async (auth, gameId) => {
+  return await getTitleTrophies(
+    auth,
+    gameId,
+    'all',
+    { npServiceName: "trophy" }
+    )
+}
+
+export const getTrophyGroups = async (auth, gameId) => {
+  return await getTitleTrophyGroups(auth, gameId, {npServiceName: "trophy"})
 }
